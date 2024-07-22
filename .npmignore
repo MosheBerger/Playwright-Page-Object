@@ -1,0 +1,11 @@
+/src
+/node_modules
+
+/global
+/playwright-report
+/test-results
+/tests
+
+tsconfig.json
+tsup.config.ts
+playwright.config.ts

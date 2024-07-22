@@ -1,5 +1,5 @@
 import { Locator, Page } from "playwright-core"
-export { Locator, Page }
+export type { Locator, Page }
 
 type nth = number
 

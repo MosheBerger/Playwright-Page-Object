@@ -1,7 +1,42 @@
 {
+  "name": "pomify",
+  "description": "Playwright js framework for page objects and explicit locators",
+  "version": "0.8.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "url": "https://github.com/"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "directories": {
+    "test": "tests"
+  },
   "devDependencies": {
     "@playwright/test": "^1.45.2",
-    "@types/node": "^20.14.11"
+    "@types/node": "^20.14.11",
+    "tsup": "^8.2.2",
+    "typescript": "^5.5.3"
   },
-  "scripts": {}
+  "dependencies": {
+    "playwright": "^1.45.2",
+    "playwright-core": "^1.45.2",
+    "undici-types": "^5.26.5"
+  },
+  "keywords": [
+    "playwright",
+    "page",
+    "page object",
+    "page object model",
+    "pom",
+    "pomify",
+    "explicit locator",
+    "locators",
+    "automation",
+    "testing"
+  ],
+  "author": "Meby",
+  "license": "MIT"
 }

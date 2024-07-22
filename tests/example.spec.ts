@@ -1,18 +1,24 @@
 import { test, expect } from '@playwright/test';
+import { TableLocator } from '../src/explicitLocators/table';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('table class', async ({ page }) => {
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+  await page.goto('http://192.168.17.161:5500/tests/test.html')
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  const table = new TableLocator(page, 'table', ['Person', 'Most interest in', 'Age'], { removeFooterRows: 1 })
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  // console.log('table', table);
+  
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
+  // table.findRowByText
+  const row = await table.findRowByText('HTML', 'Most interest in')
+  console.log('row', await row.textContent());
+  
+  // table.getListByColumn ✅
+  console.log('col',await table.getListByColumn('Age'))
+  expect(table.columnsCount).toBe(3)
+
+  
+  console.log('FINISHED');
+  await page.waitForTimeout(30000)
+})

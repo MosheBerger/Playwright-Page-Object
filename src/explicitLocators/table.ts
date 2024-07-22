@@ -4,62 +4,93 @@ import { Locator, LocatorOptions, Page } from "../types";
 type TableLocatorOptions = LocatorOptions & {
     rowSelector?: string
     cellSelector?: string
+    removeFooterRows?: number
 }
 
-type getRowOptions =
-    | {
-        by: 'index'
-        index: number
-    }
-    | {
-        by: 'text'
-        text: string
-        ColumnIndex: number
-    }
 
+export class TableLocator<ColumnsNames extends string> extends BaseLocator {
 
+    public readonly columnsCount: number
+    public readonly columnsNames: readonly ColumnsNames[]
 
-export class TableLocator extends BaseLocator {
-
-    columns: number
     private rowSelector = 'tr' // default selector for rows
-    private cellSelector = 'td' // default selector for cells
+    private cellSelector = '*' // default selector for cells
 
-    constructor(page: Page, locator: Locator | string, columns: number, options?: TableLocator) {
+    private rowLocator: Locator
+    private cellLocator = (row: Locator) => row.locator(` > ${this.cellSelector}`)
+    private footerRowsCount = 0
+
+
+    constructor(page: Page, locator: Locator | string, columnsNames: readonly ColumnsNames[], options?: TableLocatorOptions) {
         super(page, locator, options as LocatorOptions)
-        this.columns = columns
+
+        this.columnsNames = columnsNames
+        this.columnsCount = columnsNames.length
 
         if (options) {
-            const { rowSelector, cellSelector } = options
+            const { rowSelector, cellSelector, removeFooterRows } = options
 
-            if (rowSelector) this.rowSelector = rowSelector
-            if (cellSelector) this.cellSelector = cellSelector
+            if (rowSelector) { this.rowSelector = rowSelector }
+            if (cellSelector) { this.cellSelector = cellSelector }
+            if (removeFooterRows) { this.footerRowsCount = removeFooterRows }
         }
+
+        this.rowLocator = this.page.locator(this.rowSelector)
     }
 
-    private rowLocator = this.page.locator(this.rowSelector)
-    private cellLocator = (row: Locator) => row.locator(this.cellSelector)
+    async getRowByIndex(index: number) {
+        return this.rowLocator.nth(index)
+    }
 
-    async getRow(how: getRowOptions) {
+    async findRowByText(text: string, inColumn: ColumnsNames) {
 
+        const columnIndex = this.columnsNames.indexOf(inColumn)
+        const allRows = await this.getAllRows()
 
-        if (how.by === 'index') {
-            return this.rowLocator.nth(how.index)
-        }
+        // const row = await Promise.all(allRows.filter(
+        //     async (row) => (await this.cellLocator(row).nth(columnIndex).innerText()).includes(text)
+        // ))
 
-        else {
-            const allRows = await this.getAllRows()
+        // return row[0]
 
-            return allRows.filter(async (row) => (
-                await this.cellLocator(row).nth(how.ColumnIndex).innerText()).includes(how.text)
-            )[0]
+        for (const row of allRows) {
+            const cellText = await this.cellLocator(row).nth(columnIndex).innerText()
+            if (cellText.includes(text)) {
+                return row
+            }
         }
     }
 
     async getAllRows() {
-        return await this.rowLocator.all()
+        const allRows = await this.rowLocator.all()
+        const allRowsWithoutFoot = this.removeFooterRows(allRows)
+        return allRowsWithoutFoot
+    }
+
+    a() {
+        type a1 = Record<ColumnsNames, string>
+        const a = {} as a1
+
+        for (const column of this.columnsNames) {
+            a[column] = '1'
+        }
+
+        return a
+    }
+
+    async getListByColumn(column: ColumnsNames) {
+        const columnIndex = this.columnsNames.indexOf(column)
+
+        const fullColumnLocators = this.page.locator(`${this.rowSelector} ${this.cellSelector}:nth-child(${columnIndex + 1})`)
+        const list = await fullColumnLocators.all()
+
+        return this.removeFooterRows(list)
+    }
+
+    private async removeFooterRows<V>(allRows: V[]) {
+        return allRows.slice(0, allRows.length - this.footerRowsCount)
     }
 }
 
 
-class TableRow extends BaseLocator {    }
+// class TableRow extends BaseLocator { }
