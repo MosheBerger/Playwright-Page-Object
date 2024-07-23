@@ -67,16 +67,6 @@ export class TableLocator<ColumnsNames extends string> extends BaseLocator {
         return allRowsWithoutFoot
     }
 
-    a() {
-        type a1 = Record<ColumnsNames, string>
-        const a = {} as a1
-
-        for (const column of this.columnsNames) {
-            a[column] = '1'
-        }
-
-        return a
-    }
 
     async getListByColumn(column: ColumnsNames) {
         const columnIndex = this.columnsNames.indexOf(column)

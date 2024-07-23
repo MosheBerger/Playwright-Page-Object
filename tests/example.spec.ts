@@ -12,7 +12,7 @@ test('table class', async ({ page }) => {
 
   // table.findRowByText
   const row = await table.findRowByText('HTML', 'Most interest in')
-  console.log('row', await row.textContent());
+  console.log('row', await row?.textContent());
   
   // table.getListByColumn ✅
   console.log('col',await table.getListByColumn('Age'))

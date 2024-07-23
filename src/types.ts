@@ -1,4 +1,4 @@
-import { Locator, Page } from "playwright-core"
+import type { Locator, Page } from "playwright-core"
 export type { Locator, Page }
 
 type nth = number

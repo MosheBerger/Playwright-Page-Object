@@ -11,7 +11,7 @@ export class InputLocator extends BaseLocator {
 
     getInputValue: Locator['inputValue'] = this.$.inputValue.bind(this.$)
 
-    specialFill = async (value: string, options: {
+    specialFill = async (value: string, options?: {
         clear?: boolean,
         click?: boolean,
         multipleValueBy?: number
@@ -20,6 +20,8 @@ export class InputLocator extends BaseLocator {
         noWaitAfter?: boolean,
     }) => {
 
+        if (!options) { options = {} }
+        
         const { clear, click, multipleValueBy, force, timeout, noWaitAfter } = options
 
         if (clear) {
