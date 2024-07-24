@@ -35,6 +35,10 @@ export class LoginPage extends BasePage {
     errorMsgDiv: this.is.Typography('#alert')
   }
 
+  async goto(){
+    //...
+  }
+
   async login(username: string, password: string) {
     await this.$.usernameInput.fill(username);
     await this.$.passwordInput.fill(password);
@@ -72,8 +76,8 @@ test.describe('LOGIN TESTS', () => {
         const login = new LoginPage(page)
 
         await login.goto()
-        await this.$.usernameInput.fill('Moshe');
-        await this.$.loginBtn.click()
+        await login.$.usernameInput.fill('Moshe');
+        await login.$.loginBtn.click()
 
         expect(await login.$.errorMsgDiv.innerText()).toContain('Please insert password')
     })

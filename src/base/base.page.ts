@@ -2,11 +2,12 @@ import { ButtonLocator, CheckboxLocator, InputLocator, LinkLocator, TypographyLo
 import type { LinkOptions, Locator, LocatorOptions, Page } from '../types';
 import { BaseLocator } from "./base.locator";
 
+
 export abstract class BasePage {
 
     page: Page
+    $?: { [key: string]: Locator | BaseLocator }
 
-    abstract $: { [key: string]: Locator | BaseLocator }
 
     constructor(page: Page) {
         this.page = page
@@ -40,21 +41,3 @@ export abstract class BasePage {
 
 
 }
-
-// class test extends BasePage {
-
-//     $ = {
-//         username: this.is.Input('#username'),
-//         password: this.is.Input('#password'),
-//         login: this.is.Button('#login'),
-//     }
-// }
-
-
-// const t = new test({} as Page)
-// t.$.username.specialFill('test', {
-//     click: true,
-//     clear: true,
-//     multipleValueBy: 200,
-//     force: true
-// })
