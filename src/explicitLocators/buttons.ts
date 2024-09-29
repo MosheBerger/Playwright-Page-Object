@@ -1,9 +1,11 @@
+import { Locator, Page } from 'playwright-core'
 import { BaseLocator } from '../base'
-import { LinkOptions, Locator, Page } from '../types'
+import { LinkOptions } from '../types'
 
 
 export class ButtonLocator extends BaseLocator {
     click: Locator['click'] = this.$.click.bind(this.$)
+    isDisabled: Locator['isDisabled'] = this.$.isDisabled.bind(this.$)
 }
 
 export class LinkLocator<T> extends ButtonLocator {

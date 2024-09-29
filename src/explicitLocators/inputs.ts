@@ -1,5 +1,6 @@
+import { Locator, Page } from "playwright-core"
 import { BaseLocator } from "../base/base.locator"
-import { Locator, LocatorOptions, Page } from "../types"
+import {  LocatorOptions,  } from "../types"
 
 export class InputLocator extends BaseLocator {
 

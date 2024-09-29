@@ -1,12 +1,13 @@
-import { ButtonLocator, CheckboxLocator, InputLocator, LinkLocator, TypographyLocator } from '../explicitLocators';
-import type { LinkOptions, Locator, LocatorOptions, Page } from '../types';
-import { BaseLocator } from "./base.locator";
+import type { Locator, Page } from 'playwright-core';
+import { ButtonLocator, CheckboxLocator, InputLocator, LinkLocator, TableLocator, TableLocatorOptions, TextContainerLocator } from '../explicitLocators';
+import type { LinkOptions, LocatorOptions, } from '../types';
+// import { BaseLocator } from "./base.locator";
 
 
 export abstract class BasePage {
 
     page: Page
-    $?: { [key: string]: Locator | BaseLocator }
+    // $?: { [key: string]: Locator | BaseLocator | (() => Locator | BaseLocator) }
 
 
     constructor(page: Page) {
@@ -28,8 +29,11 @@ export abstract class BasePage {
             return new CheckboxLocator(this.page, locator, options)
         },
         Typography: (locator: Locator | string, options?: LocatorOptions) => {
-            return new TypographyLocator(this.page, locator, options)
+            return new TextContainerLocator(this.page, locator, options)
         },
+        Table: <ColumnsNames extends string>(locator: Locator | string, columnsNames: ColumnsNames[], options?: TableLocatorOptions) => {
+            return new TableLocator<ColumnsNames>(this.page, locator, columnsNames, options)
+        }
         // Radio: (locator: Locator | string, options?: LocatorOptions) => {
         //     return new RadioLocator(this.page, locator, options)
         // },

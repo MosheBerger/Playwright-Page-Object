@@ -1,4 +1,5 @@
-import { LocatorOptions, Page, Locator } from "../types"
+import { Locator, Page } from "playwright-core"
+import { LocatorOptions } from "../types"
 
 export class BaseLocator {
     protected page: Page
