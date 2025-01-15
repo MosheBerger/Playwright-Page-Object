@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Locator } from '@playwright/test';
 import { ButtonLocator, InputLocator, TableLocator, TextContainerLocator } from '../src/explicitLocators';
 import { mapArray } from '../src/utils';
 
@@ -11,22 +11,30 @@ test('table locator class', async ({ page }) => {
     const table = new TableLocator(
         page,
         'table',
-        ['Person', 'Most interest in', 'Age'],
-        ['ButtonLocator','InputLocator','RadioLocator'],
-        { removeFooterRows: 1 }
+        [
+            { name: 'a', locator: 'Button' },
+            { name: 'b', locator: 'Link' },
+            { name: 'c', locator: 'Input' },
+            { name: 'mashu', locator: 'TextContainer' }
+        ] as const,
     )
-
     // console.log('table', table);
 
 
+    const za = table.columnsNames
+    //         ^?
+    const zb = table.columnsLocators
+    //         ^?
+    const zc = await table.getAllRows()
+    //      ^?
     // table.findRowByText ✅
-    const row = await table.findRowByText('performance', 'Age')
-    console.log('findRowByText', await row?.textContent());
+    const row = await table.findRowByText('performance', 'a')
+    console.log('findRowByText', await row?.mashu.innerText());
 
 
 
     // table.getListByColumn ✅
-    const column = await table.getListByColumn('Age')
+    const column = await table.getListByColumn('a')
     const allTextContent = await mapArray(column, async (el) => await el.textContent())
     console.log('getListByColumn', allTextContent)
 
@@ -37,7 +45,7 @@ test('table locator class', async ({ page }) => {
 
     // table.getRowByIndex ✅
     const rowByIndex = await table.getRowByIndex(2)
-    console.log('rowByIndex', await rowByIndex.textContent());
+    console.log('rowByIndex', await rowByIndex.mashu.innerText());
 
 
     // table.columnsNames ✅

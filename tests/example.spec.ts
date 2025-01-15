@@ -5,7 +5,7 @@ test('table class', async ({ page }) => {
 
   await page.goto('http://192.168.17.161:5500/tests/test.html')
 
-  const table = new TableLocator(page, 'table', ['Person', 'Most interest in', 'Age'], { removeFooterRows: 1 })
+  const table = new TableLocator(page, 'table', ['Person', 'Most interest in', 'Age'], [],{ removeFooterRows: 1 })
 
   // console.log('table', table);
   
@@ -22,3 +22,7 @@ test('table class', async ({ page }) => {
   console.log('FINISHED');
   await page.waitForTimeout(30000)
 })
+
+function a () {
+  return 1
+}
